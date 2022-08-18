@@ -1,0 +1,17 @@
+{
+    "getCategoriesCommands": "SELECT categoryShort FROM curationCategories WHERE isactive = 1 ORDER BY categoryLong",
+    "getCurrentQueue": "SELECT curationAccount, count(*) as result FROM curationChoices WHERE voted = 0 GROUP BY curationAccount",
+    "getCurrentQueueForAccount": "SELECT count(*) as result FROM curationChoices WHERE voted = 0 AND curationAccount = '{curationAccount}'",
+    "getCurrentQueueForUser": "SELECT curationAccount,count(*) as result FROM curationChoices WHERE curator = '{curator}' AND voted = 0 GROUP BY curationAccount",
+    "getIsPostCurated": "SELECT count(*) as result FROM curationChoices WHERE postAuthor = '{author}' AND postPermlink = '{link}' AND curationAccount = '{curationAccount}'",
+    "getCategoriesFullDescription": "SELECT categoryShort, categoryLong, mainCategory FROM curationCategories WHERE isactive = 1 ORDER BY mainCategory, categoryShort",
+    "insertCuration": "INSERT INTO curationChoices VALUES ('{author}','{permlink}','{postedOnDate}','{postedOnTime}','{curator}','{postedOnDate}','{postedOnTime}',0,'{category}','{network}',0,{tip},0, '{curationAccount}')",
+    "updateCurationDone": "UPDATE curationChoices set voted = 1 WHERE postAuthor = '{author}' AND postPermlink = '{permlink}' AND curationAccount = '{curationAccount}'",
+    "updateFirstCurationCommentDone": "UPDATE curationChoices set firstCurationComment = 1 WHERE postAuthor = '{author}' AND postPermlink = '{permlink}'",
+    "openCurations": "SELECT curationChoices.*, curationCategories.curationtag FROM curationChoices INNER JOIN curationCategories ON curationCategories.categoryShort = curationChoices.category WHERE voted = 0 AND curationAccount = '{curationAccount}' ORDER BY postDate asc",
+    "unexecutedFirstCurationComments": "SELECT curationChoices.*, curationCategories.curationtag FROM curationChoices INNER JOIN curationCategories ON curationCategories.categoryShort = curationChoices.category WHERE firstCurationComment = 0 AND curationAccount = '{curationAccount}' AND postAuthor in (SELECT postAuthor FROM curationChoices sub WHERE sub.postAuthor = curationChoices.postAuthor GROUP BY postAuthor having count(*) = 1) ORDER BY postDate asc ",
+    "insertFeedback": "INSERT INTO feedback(postAuthor,postLink,feedback) VALUES ('{author}','{permlink}','{feedback}')",
+    "updateFeedbackSent": "UPDATE  feedback set sent = 1 WHERE postAuthor = '{author}' AND postLink = '{permlink}'",
+    "unexecutedFeedback": "SELECT * FROM feedback WHERE sent = 0"
+}
+
